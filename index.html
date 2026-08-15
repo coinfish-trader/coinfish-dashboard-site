@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Coinfish Dashboard</title>
+<meta name="description" content="Coinfish command center: jump to the main site, trading playbook, journal, and newsfeed.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="icon" href="/coinfish-logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Open+Sans:wght@300;400;600&family=Spectral:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #0A2342;
+    --navy-900: #061629;
+    --navy-800: #0d2c52;
+    --navy-700: #143866;
+    --teal: #1CA9B6;
+    --teal-bright: #25c5d4;
+    --gold: #D4AF37;
+    --gold-bright: #e6c24f;
+    --white: #FFFFFF;
+    --ink: #b9c3d6;
+    --hairline: rgba(255, 255, 255, 0.10);
+    --hairline-strong: rgba(255, 255, 255, 0.18);
+    --glow-gold: rgba(212, 175, 55, 0.30);
+    --f-head: 'Inter', system-ui, sans-serif;
+    --f-display: 'Spectral', Georgia, serif;
+    --f-body: 'Open Sans', system-ui, sans-serif;
+    --ease: cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--f-body);
+    color: var(--white);
+    background:
+      radial-gradient(1200px 700px at 15% -10%, rgba(212,175,55,0.10), transparent 60%),
+      radial-gradient(1000px 600px at 110% 10%, rgba(28,169,182,0.10), transparent 55%),
+      linear-gradient(180deg, var(--navy) 0%, var(--navy-900) 100%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: clamp(28px, 6vw, 72px) clamp(20px, 5vw, 64px) 48px;
+  }
+
+  header.top {
+    width: 100%;
+    max-width: 1100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: clamp(28px, 5vw, 48px);
+  }
+  header.top img { width: 40px; height: 40px; border-radius: 9px; }
+  header.top b {
+    font-family: var(--f-head);
+    font-weight: 700;
+    font-size: 1.3rem;
+    letter-spacing: 0.01em;
+  }
+  header.top b span { color: var(--gold); }
+
+  .intro {
+    text-align: center;
+    max-width: 640px;
+    margin-bottom: clamp(36px, 6vw, 56px);
+  }
+  .intro .eyebrow {
+    display: inline-block;
+    font-family: var(--f-head);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--navy-900);
+    background: var(--gold);
+    padding: 6px 14px;
+    border-radius: 100px;
+    margin-bottom: 18px;
+  }
+  .intro h1 {
+    font-family: var(--f-display);
+    font-weight: 500;
+    font-size: clamp(2rem, 4.5vw, 2.8rem);
+    line-height: 1.15;
+    margin: 0 0 12px;
+  }
+  .intro p {
+    color: var(--ink);
+    font-size: 1.02rem;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .grid {
+    width: 100%;
+    max-width: 1100px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+  }
+  @media (max-width: 720px) {
+    .grid { grid-template-columns: 1fr; }
+  }
+
+  .card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    background: var(--navy-800);
+    border: 1px solid var(--hairline);
+    border-radius: 16px;
+    padding: 30px 28px;
+    text-decoration: none;
+    color: var(--white);
+    overflow: hidden;
+    transition: transform .35s var(--ease), border-color .3s, box-shadow .4s var(--ease);
+  }
+  .card::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(212,175,55,0.08), transparent 55%);
+    opacity: 0;
+    transition: opacity .35s var(--ease);
+  }
+  .card:hover {
+    transform: translateY(-4px);
+    border-color: var(--hairline-strong);
+    box-shadow: 0 30px 60px -30px var(--glow-gold);
+  }
+  .card:hover::before { opacity: 1; }
+
+  .card .row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .card .icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: var(--navy-700);
+    border: 1px solid var(--hairline);
+    flex-shrink: 0;
+  }
+  .card .icon svg { width: 22px; height: 22px; }
+
+  .card .badge {
+    font-family: var(--f-head);
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border: 1px solid rgba(212,175,55,0.35);
+    background: rgba(212,175,55,0.08);
+    padding: 4px 10px;
+    border-radius: 100px;
+  }
+  .card .badge.lock {
+    color: var(--teal-bright);
+    border-color: rgba(37,197,212,0.35);
+    background: rgba(37,197,212,0.08);
+  }
+
+  .card h2 {
+    font-family: var(--f-head);
+    font-weight: 600;
+    font-size: 1.28rem;
+    margin: 4px 0 0;
+  }
+  .card p.desc {
+    color: var(--ink);
+    font-size: 0.94rem;
+    line-height: 1.55;
+    margin: 0;
+  }
+  .card .go {
+    margin-top: auto;
+    padding-top: 10px;
+    font-family: var(--f-head);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--gold-bright);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .card .go .arrow { transition: transform .3s var(--ease); }
+  .card:hover .go .arrow { transform: translateX(4px); }
+
+  footer {
+    margin-top: clamp(40px, 6vw, 64px);
+    color: rgba(255,255,255,0.45);
+    font-size: 0.82rem;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <img src="/coinfish-logo.png" alt="Coinfish">
+  <b>Coin<span>fish</span> Dashboard</b>
+</header>
+
+<div class="intro">
+  <span class="eyebrow">Command Center</span>
+  <h1>Reel It All In</h1>
+  <p>One cast, every tool: the main site, the playbook, the journal, and the feed.</p>
+</div>
+
+<div class="grid">
+
+  <a class="card" href="https://coinfishtraders.com" target="_blank" rel="noopener">
+    <div class="row">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#e6c24f" stroke-width="1.6"><path d="M3 12l9-9 9 9"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg>
+      </div>
+      <span class="badge">Public</span>
+    </div>
+    <h2>Main Site</h2>
+    <p class="desc">coinfishtraders.com: education, community, resources, and the options scanner.</p>
+    <span class="go">Open site <span class="arrow">&rarr;</span></span>
+  </a>
+
+  <a class="card" href="https://playbook.coinfishtraders.com" target="_blank" rel="noopener">
+    <div class="row">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#25c5d4" stroke-width="1.6"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+      </div>
+      <span class="badge lock">Private</span>
+    </div>
+    <h2>Trading Playbook</h2>
+    <p class="desc">Daily routine, watchlist, scanner, strategies, and the spread calculator. Login required.</p>
+    <span class="go">Open playbook <span class="arrow">&rarr;</span></span>
+  </a>
+
+  <a class="card" href="https://journal.coinfishtraders.com" target="_blank" rel="noopener">
+    <div class="row">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#e6c24f" stroke-width="1.6"><path d="M6 4h9l3 3v13a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/><path d="M9 9h6M9 13h6M9 17h4"/></svg>
+      </div>
+      <span class="badge">Journal</span>
+    </div>
+    <h2>Trading Journal</h2>
+    <p class="desc">Trade log and performance tracking: wins, losses, and history over time.</p>
+    <span class="go">Open journal <span class="arrow">&rarr;</span></span>
+  </a>
+
+  <a class="card" href="https://newsfeed.coinfishtraders.com" target="_blank" rel="noopener">
+    <div class="row">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#25c5d4" stroke-width="1.6"><path d="M4 5h13a2 2 0 0 1 2 2v11a1 1 0 0 1-1 1H6a2 2 0 0 1-2-2V5z"/><path d="M8 9h6M8 13h6M8 17h3"/><path d="M17 8h2a1 1 0 0 1 1 1v9a2 2 0 0 1-2 2"/></svg>
+      </div>
+      <span class="badge">Feed</span>
+    </div>
+    <h2>Newsfeed</h2>
+    <p class="desc">Market news and headlines, streamed in real time.</p>
+    <span class="go">Open newsfeed <span class="arrow">&rarr;</span></span>
+  </a>
+
+</div>
+
+<footer>Coinfish Trading Company &middot; dashboard.coinfishtraders.com</footer>
+
+</body>
+</html>
